@@ -1,14 +1,10 @@
 import { IonPage, IonCard, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewWillEnter, IonContent } from "@ionic/react"
 
 import React, { useState } from "react"
-import axios from "axios"
 import {
     FileTransfer,
-    FileUploadOptions,
-    FileTransferObject
   } from "@ionic-native/file-transfer";
   import { File } from "@ionic-native/file";
-  import { Capacitor } from '@capacitor/core';
   import { post } from "../api/base"
 interface Book {
     title: string,
@@ -74,9 +70,6 @@ const Library : React.FC = ()=>{
             </IonHeader>
             <IonContent>
             <input placeholder="Поиск" onChange={setValue} />
-            {books.filter((value:Book)=> value.title.match(search)).map((value:Book, index) => {
-                return <Books book={value} key={index}/>
-            })}
             {books.filter((value:Book)=> value.title.match(search)).map((value:Book, index) => {
                 return <Books book={value} key={index}/>
             })}
