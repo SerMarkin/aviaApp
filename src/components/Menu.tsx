@@ -7,13 +7,11 @@ import {
   IonListHeader,
   IonMenu,
   IonMenuToggle,
-  IonNote,
   IonImg,
 } from '@ionic/react';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import restIcon from '../../public/assets/icon/ios-restaurant.svg'
-import { archiveOutline, archiveSharp,restaurantOutline  , calendarOutline, bookOutline, newspaperOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { restaurantOutline  , calendarOutline, bookOutline, newspaperOutline,  trashOutline } from 'ionicons/icons';
 import './Menu.css';
 
 interface MenuProps extends RouteComponentProps {

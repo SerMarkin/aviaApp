@@ -1,8 +1,6 @@
 import { IonPage, IonCard, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle } from "@ionic/react"
-import React, { useState } from "react"
-import axios from "axios"
+import React from "react"
 const News : React.FC = ()=>{
-    const [name,setName] = useState("");
     return (
         <IonPage>
             <IonHeader>
@@ -14,7 +12,7 @@ const News : React.FC = ()=>{
                 </IonToolbar>
             </IonHeader>
             <IonCard style={{height:"20vh",width: "95vw",margin: "20vw 2.5vw",position: "absolute"}}>
-                {name}
+                
             </IonCard>
         </IonPage>
     )

@@ -1,5 +1,4 @@
 import Menu from './components/Menu';
-import Page from './pages/Page';
 import React, { useState } from 'react';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -30,7 +29,7 @@ import FoodCort from './pages/FoodCort';
 
 const App: React.FC = () => {
 
-  const [selectedPage, setSelectedPage] = useState('');
+  const [selectedPage] = useState('');
 
   return (
     <IonApp>
