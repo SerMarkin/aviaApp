@@ -8,10 +8,12 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
+  IonImg,
 } from '@ionic/react';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import restIcon from '../../public/assets/icon/ios-restaurant.svg'
+import { archiveOutline, archiveSharp,restaurantOutline  , calendarOutline, bookOutline, newspaperOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 import './Menu.css';
 
 interface MenuProps extends RouteComponentProps {
@@ -23,61 +25,59 @@ interface AppPage {
   iosIcon: string;
   mdIcon: string;
   title: string;
+  disabled?: boolean;
 }
 
 const appPages: AppPage[] = [
   {
-    title: 'Inbox',
-    url: '/page/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
+    title: 'Расписание',
+    url: '/home',
+    iosIcon: calendarOutline,
+    mdIcon: calendarOutline
   },
   {
-    title: 'Outbox',
-    url: '/page/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
+    title: 'Библиотека',
+    url: '/library',
+    iosIcon: bookOutline,
+    mdIcon: bookOutline
   },
   {
-    title: 'Favorites',
-    url: '/page/Favorites',
-    iosIcon: heartOutline,
-    mdIcon: heartSharp
+    title: 'Новости',
+    url: '/news',
+    iosIcon: newspaperOutline,
+    mdIcon: newspaperOutline
   },
   {
-    title: 'Archived',
-    url: '/page/Archived',
-    iosIcon: archiveOutline,
-    mdIcon: archiveSharp
+    title: 'Столовая',
+    url: '/foodcort',
+    iosIcon: restaurantOutline,
+    mdIcon: restaurantOutline
   },
   {
-    title: 'Trash',
-    url: '/page/Trash',
+    title: 'Тестирование',
+    url: '/test',
     iosIcon: trashOutline,
-    mdIcon: trashSharp
+    mdIcon: trashOutline,
+    disabled:true,
   },
-  {
-    title: 'Spam',
-    url: '/page/Spam',
-    iosIcon: warningOutline,
-    mdIcon: warningSharp
-  }
 ];
 
-const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+// const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
 const Menu: React.FunctionComponent<MenuProps> = ({ selectedPage }) => {
 
   return (
     <IonMenu contentId="main" type="overlay">
-      <IonContent>
+      <IonContent >
         <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
+          <IonListHeader>
+            <IonImg src="assets/icon/logoAvia.jpg" style={{"width":"200px","margin":"20px"}} />
+          </IonListHeader>
+          <br/>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={selectedPage === appPage.title ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
+                <IonItem className={selectedPage === appPage.title ? 'selected' : 'us'} routerLink={appPage.url} routerDirection="none" disabled={appPage.disabled}  detail={false}>
                   <IonIcon slot="start" icon={appPage.iosIcon} />
                   <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
@@ -86,7 +86,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({ selectedPage }) => {
           })}
         </IonList>
 
-        <IonList id="labels-list">
+        {/* <IonList id="labels-list">
           <IonListHeader>Labels</IonListHeader>
           {labels.map((label, index) => (
             <IonItem lines="none" key={index}>
@@ -94,7 +94,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({ selectedPage }) => {
               <IonLabel>{label}</IonLabel>
             </IonItem>
           ))}
-        </IonList>
+        </IonList> */}
       </IonContent>
     </IonMenu>
   );
