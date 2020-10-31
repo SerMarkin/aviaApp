@@ -90,6 +90,18 @@ ion-icon.md.hydrated {
 ion-menu-button.in-toolbar {
   color: #316bb9;
 }
+
+ion-input{
+  padding-right: 30px;
+  font-size: 0.9em;
+  border: 1px solid #50c8ff !important;
+  --background: rgb(255, 255, 255) !important;
+  /* height: 10%; */
+  /* width: 41%; */
+  max-width: 90vw; 
+  max-height: 10vh;
+}
+
 @media (prefers-color-scheme: dark) {
   /*
    * Dark Colors

@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { restaurantOutline  , calendarOutline, bookOutline, newspaperOutline,  trashOutline } from 'ionicons/icons';
+import { restaurantOutline  , calendarOutline, bookOutline, newspaperOutline,  trashOutline, bookmarkOutline } from 'ionicons/icons';
 import './Menu.css';
 
 interface MenuProps extends RouteComponentProps {
@@ -27,12 +27,6 @@ interface AppPage {
 }
 
 const appPages: AppPage[] = [
-  {
-    title: 'Расписание',
-    url: '/home',
-    iosIcon: calendarOutline,
-    mdIcon: calendarOutline
-  },
   {
     title: 'Библиотека',
     url: '/library',
@@ -52,15 +46,21 @@ const appPages: AppPage[] = [
     mdIcon: restaurantOutline
   },
   {
+    title: 'Расписание',
+    url: '/home',
+    iosIcon: calendarOutline,
+    disabled:true,
+    mdIcon: calendarOutline
+  },
+  {
     title: 'Тестирование',
     url: '/test',
-    iosIcon: trashOutline,
-    mdIcon: trashOutline,
+    iosIcon: bookmarkOutline,
+    mdIcon: bookmarkOutline,
     disabled:true,
   },
 ];
 
-// const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
 const Menu: React.FunctionComponent<MenuProps> = ({ selectedPage }) => {
 
@@ -83,16 +83,6 @@ const Menu: React.FunctionComponent<MenuProps> = ({ selectedPage }) => {
             );
           })}
         </IonList>
-
-        {/* <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon slot="start" icon={bookmarkOutline} />
-              <IonLabel>{label}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList> */}
       </IonContent>
     </IonMenu>
   );

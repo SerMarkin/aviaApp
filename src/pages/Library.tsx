@@ -1,11 +1,15 @@
-import { IonPage, IonCard, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewWillEnter, IonContent } from "@ionic/react"
+import { IonPage, IonCard, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, useIonViewWillEnter, IonContent, IonInput, IonButton, IonIcon, IonCardContent, IonCardHeader, IonCol, IonRow, IonImg } from "@ionic/react"
 
 import React, { useState } from "react"
 import {
     FileTransfer,
-  } from "@ionic-native/file-transfer";
-  import { File } from "@ionic-native/file";
-  import { post } from "../api/base"
+} from "@ionic-native/file-transfer";
+import { File } from "@ionic-native/file";
+import { post } from "../api/base"
+import '../styles/Paginator.css'
+
+import { add, informationCircle } from 'ionicons/icons';
+
 interface Book {
     title: string,
     description: string,
@@ -32,32 +36,74 @@ const download = (src:string) => {
     }
     );
 };
+
 export class Books extends React.Component<Props, {}> {
     render(){
 
         
         return (
-            <IonCard  onClick={() => download(this.props.book.src)} style={{width: "95vw",margin: "2px 2.5vw"}}>
-            <h3>{this.props.book.title}</h3>
-            <img src={this.props.book.logo} alt="logo" style={{height:"20vh"}} />
-            <p >Скачать</p>
+            <IonCard >
+                <IonCardHeader >
+                    <div style={{display: "block"}}>
+                        <span style={{position: "relative",float: "left",lineHeight: "14px"}}>
+                            {this.props.book.title}
+                        </span>
+                    </div>
+                    <IonIcon style={{cursor: "pointer"}} src={informationCircle}  size="small" />
+                </IonCardHeader>
+                <IonCardContent>
+                    <IonImg src={this.props.book.logo} alt="logo"  />
+                </IonCardContent>
+            <IonButtons style={{maxWidth:"100%"}}>
+            <IonButton onClick={() => download(this.props.book.src)}>Скачать</IonButton>
+            <IonButton onClick={() => {}}><IonIcon src={add}></IonIcon></IonButton>
+            </IonButtons>
             </IonCard>
         );
     }
   }
 const Library : React.FC = ()=>{
     const [books,setBooks] = useState([]);
+    const [booksToShow,setBooksToShow] = useState([]);
+    const [page,setPage] = useState(0);
+    const [pageCount,setPageCount] = useState(0);
+    const [booksTotal,setBooksTotal] = useState(0);
+    const [booksOnPage, setBooksOnPage] = useState(1);
+    
 
     useIonViewWillEnter(()=>{
         post("polls/books").then((resp)=>{
-            setBooks(resp.data)
+            setBooks(resp.data);
+            setPage(1);
+            setPageCount(Math.ceil(resp.data.length/booksOnPage));
+            setBooksTotal(resp.data.length);
+            setSearch("");
+            setBooksToShow(books.slice((page-1)*booksOnPage,page*booksOnPage));
         })
     })
     const [search,setSearch] = useState("")
-    const setValue = (e:React.ChangeEvent<HTMLInputElement>) =>{
-        console.log(e.target.value)
-        setSearch(e.target.value)
+    const setValue = (e:string) =>{
+
+        console.log(e)
+        setPage(1);
+        updaBooksToShow();
+        setSearch(e)
     }
+
+
+    const updaBooksToShow = ()=>{
+        const t = books.filter((value:Book)=> value.title.match(search)).slice((page-1)*booksOnPage,page*booksOnPage+1)
+        setBooksToShow(t);
+    }
+
+    interface upd{
+        selected:number;
+    }
+    const updatePage = (e:upd) =>{
+        setPage(e.selected);
+        updaBooksToShow();
+    }
+
     return (
         <IonPage >
             <IonHeader>
@@ -69,10 +115,29 @@ const Library : React.FC = ()=>{
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-            <input placeholder="Поиск" onChange={setValue} />
+            <IonInput placeholder="Поиск" autocomplete={'on'} onIonChange={e => setValue(e.detail.value!)} 
+                style={{margin:"4px 20px"}}
+            />
+            <IonRow>
+         
             {books.filter((value:Book)=> value.title.match(search)).map((value:Book, index) => {
-                return <Books book={value} key={index}/>
+                return <IonCol size="12" sizeSm="3" sizeLg="2"  key={index}><Books book={value} key={index}/></IonCol>
             })}
+            </IonRow>
+            <IonRow>     
+                {/* <Paginate 
+                pageCount={pageCount} 
+                pageClassName="pagination" 
+                activeClassName="active"
+                pageRangeDisplayed={10} 
+                onPageChange={updatePage} 
+                marginPagesDisplayed={3} 
+                previousClassName={"next-tab"}
+                nextClassName={"next-tab"}
+                nextLabel="Вперед&rarr;"
+                previousLabel="&larr;Назад"
+                /> */}
+            </IonRow>
             </IonContent>
             
 
