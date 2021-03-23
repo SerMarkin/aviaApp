@@ -5,7 +5,7 @@ import {
     FileTransfer,
 } from "@ionic-native/file-transfer";
 import { File } from "@ionic-native/file";
-import { post } from "../api/base"
+import { get, post } from "../api/base"
 import '../styles/Paginator.css'
 
 import { add, informationCircle } from 'ionicons/icons';
@@ -72,7 +72,7 @@ const Library : React.FC = ()=>{
     
 
     useIonViewWillEnter(()=>{
-        post("polls/books").then((resp)=>{
+        get("polls/books").then((resp)=>{
             setBooks(resp.data);
             setPage(1);
             setPageCount(Math.ceil(resp.data.length/booksOnPage));
@@ -121,7 +121,7 @@ const Library : React.FC = ()=>{
             <IonRow>
          
             {books.filter((value:Book)=> value.title.match(search)).map((value:Book, index) => {
-                return <IonCol size="12" sizeSm="3" sizeLg="2"  key={index}><Books book={value} key={index}/></IonCol>
+                return <IonCol size="12" sizeXs="6" sizeMd="6" sizeSm="3" sizeLg="2"  key={index}><Books book={value} key={index}/></IonCol>
             })}
             </IonRow>
             <IonRow>     
