@@ -33,46 +33,48 @@ const appPages: AppPage[] = [
     iosIcon: bookOutline,
     mdIcon: bookOutline
   },
-  {
-    title: 'Новости',
-    url: '/news',
-    iosIcon: newspaperOutline,
-    mdIcon: newspaperOutline
-  },
-  {
-    title: 'Столовая',
-    url: '/foodcort',
-    iosIcon: restaurantOutline,
-    mdIcon: restaurantOutline
-  },
+
   {
     title: 'Расписание',
     url: '/home',
     iosIcon: calendarOutline,
-    disabled:true,
     mdIcon: calendarOutline
   },
   {
-    title: 'Тестирование',
-    url: '/test',
-    iosIcon: bookmarkOutline,
-    mdIcon: bookmarkOutline,
+    title: 'Столовая',
+    url: '/foodcort',
     disabled:true,
+    iosIcon: restaurantOutline,
+    mdIcon: restaurantOutline
   },
+  {
+    title: 'Новости',
+    url: '/news',
+    disabled:true,
+    iosIcon: newspaperOutline,
+    mdIcon: newspaperOutline
+  },
+  // {
+  //   title: 'Тестирование',
+  //   url: '/test',
+  //   iosIcon: bookmarkOutline,
+  //   mdIcon: bookmarkOutline,
+  //   disabled:true,
+  // },
 ];
 
 
 const Menu: React.FunctionComponent<MenuProps> = ({ selectedPage }) => {
 
   return (
-    <IonMenu contentId="main" type="overlay">
+    <IonMenu contentId="main" type="overlay"  maxEdgeStart={10} >
       <IonContent >
         <IonList id="inbox-list">
           <IonListHeader>
             <IonImg src="assets/icon/logoAvia.jpg" style={{"width":"200px","margin":"20px"}} />
           </IonListHeader>
           <br/>
-          {appPages.map((appPage, index) => {
+          <>{appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem className={selectedPage === appPage.title ? 'selected' : 'us'} routerLink={appPage.url} routerDirection="none" disabled={appPage.disabled}  detail={false}>
@@ -81,7 +83,7 @@ const Menu: React.FunctionComponent<MenuProps> = ({ selectedPage }) => {
                 </IonItem>
               </IonMenuToggle>
             );
-          })}
+          })}</>
         </IonList>
       </IonContent>
     </IonMenu>

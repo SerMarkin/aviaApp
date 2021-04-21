@@ -37,10 +37,6 @@ const App: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu selectedPage={selectedPage} />
           <IonRouterOutlet id="main">
-            {/* <Route path="/page/:name" render={(props) => {
-              setSelectedPage(props.match.params.name);
-              return <Page {...props} />;
-            }} exact={true} /> */}
             <Route path="/home" component={Schedule} exact={true} />
             <Route path="/news" component={News} exact={true} />
             <Route path="/library" component={Library} exact={true} />

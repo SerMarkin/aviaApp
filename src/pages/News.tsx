@@ -83,9 +83,10 @@ const News : React.FC = ()=>{
                 <IonTitle className="title-large">Новости</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            {news.filter((value:NewsCardInfo)=> value.title.match(search)).map((value:NewsCardInfo, index) => {
+            <>{news.filter((value:NewsCardInfo)=> value.title.match(search)).map((value:NewsCardInfo, index) => {
                 return <NewsCard newsCardInfo={value} fullDesc={fullDesc[index]} key={index}/>
             })}
+            </>
         </IonPage>
     )
 } 
