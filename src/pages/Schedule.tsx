@@ -1,10 +1,10 @@
 import { IonPage, IonCard, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonSelect, IonSelectOption, IonItem, IonLabel, useIonViewWillEnter, IonRefresher, IonRefresherContent, IonRow, IonCol, IonButton, IonBackButton, IonIcon } from "@ionic/react"
 import { AxiosResponse } from "axios"
-import React, { MouseEventHandler, useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { get, post } from "../api/base"
+import {get as getCookie,set as setCookie} from '../utils/storageModel'
 import moment from 'moment'
 import 'moment/locale/ru';
-import { RefresherEventDetail } from '@ionic/core';
 import { arrowBackOutline, arrowForwardOutline } from 'ionicons/icons'
 import './Schedule.css';
 moment.locale("ru")
@@ -57,7 +57,8 @@ interface CalendarDaysCircleProps {
 }
 
 interface CalendarDaysCircleState {
-    currentDay: number
+    currentDay: number,
+    currentStudyIndex: number,
 }
 interface LessonBlockProps {
     lesson: Lesson
@@ -68,10 +69,10 @@ const LessonBlock = (props: LessonBlockProps) => {
     const { lesson } = props
     return (
         <IonRow className="blockScroll">
-            <IonCol>{moment(lesson.times_for_lessons.time_start, "HH:mm:ss").format("HH:mm")} - {moment(lesson.times_for_lessons.time_end, "HH:mm:ss").format("HH:mm")}</IonCol>
-            <IonCol>{lesson.discipline.name}</IonCol>
-            <IonCol>{lesson.place}</IonCol>
-            <IonCol>{lesson.teacher}</IonCol>
+            <IonCol size="2">{moment(lesson.times_for_lessons.time_start, "HH:mm:ss").format("HH:mm")} - {moment(lesson.times_for_lessons.time_end, "HH:mm:ss").format("HH:mm")}</IonCol>
+            <IonCol size="4">{lesson.discipline.name}</IonCol>
+            <IonCol size="2">{lesson.place}</IonCol>
+            <IonCol size="4">{lesson.teacher}</IonCol>
         </IonRow>
     )
 }
@@ -81,25 +82,32 @@ class CalendarDaysCircle extends React.Component<CalendarDaysCircleProps, Calend
     constructor(props: CalendarDaysCircleProps) {
         super(props)
         this.state = {
-            currentDay: moment().isoWeekday()
+            currentDay: moment().isoWeekday(),
+            currentStudyIndex: this.getStudyIndex(moment().isoWeekday())
         };
+    }
+
+    getStudyIndex = (currentDay: number) => {
+        const { weekNumber, studyDays } = this.props
+        const format = "YYYY-MM-DD"
+        const cd = studyDays.findIndex((val,index,obj)=>moment(val.date_actual).format(format)===moment().isoWeek(weekNumber).isoWeekday(currentDay+1).format(format))
+        return cd
     }
 
     updateWeekDay = (currentDay: number) => {
         this.setState({
-            currentDay: currentDay
+            currentStudyIndex: this.getStudyIndex(currentDay),
+            currentDay
         })
     }
 
 
     render() {
         const listDays = [0, 1, 2, 3, 4, 5, 6]
-        const { currentDay } = this.state
+        const { currentDay, currentStudyIndex } = this.state
         const { weekNumber, studyDays, updateWeekNumber } = this.props
-        console.log(weekNumber)
-        console.log(studyDays)
+        console.log(currentDay)
         const date = moment().isoWeek(weekNumber).startOf('week')
-        console.log(date)
         return (
             <>
                 <IonCard>
@@ -127,13 +135,13 @@ class CalendarDaysCircle extends React.Component<CalendarDaysCircleProps, Calend
                 <IonCard className="lessonCard">
                     <IonHeader className="headerCard">на {moment(date).day(currentDay + 1).format("DD.MM")}</IonHeader>
                     <IonRow className="blockScroll">
-                        <IonCol>Время</IonCol>
-                        <IonCol>Дисциплина</IonCol>
-                        <IonCol>Место</IonCol>
-                        <IonCol>Преподаватель</IonCol>
+                        <IonCol size="2" >Время</IonCol>
+                        <IonCol size="4">Дисциплина</IonCol>
+                        <IonCol size="2">Место</IonCol>
+                        <IonCol size="4">Преподаватель</IonCol>
                     </IonRow>
                     {
-                        !!studyDays[currentDay] ? studyDays[currentDay].lessons.sort((a, b) => a.times_for_lessons.order_num - b.times_for_lessons.order_num).map((lesson) => <LessonBlock lesson={lesson} key={"lesson" + lesson.id} />)
+                        !!studyDays[currentStudyIndex] ? studyDays[currentStudyIndex].lessons.sort((a, b) => a.times_for_lessons.order_num - b.times_for_lessons.order_num).map((lesson) => <LessonBlock lesson={lesson} key={"lesson" + lesson.id} />)
                             :
                             <IonTitle size="small" className="noDataBlock">Отсутствует</IonTitle>
                     }
@@ -148,11 +156,12 @@ class CalendarDaysCircle extends React.Component<CalendarDaysCircleProps, Calend
 const Schedule: React.FC = () => {
 
     const [groups, setGroups] = useState<Group[]>([])
-    const [currentGroup, setCurrentGroup] = useState<Group>()
+    const [currentGroup, setCurrentGroup] = useState<string | null>(getCookie("currentGroup"))
     const [loadingState, setLoadingState] = useState<Boolean>(true)
     const [currentWeekNumber, setCurrentWeekNumber] = useState<number>(moment().week())
     const [studyDays, setStudyDays] = useState<StudyDay[]>([])
 
+    console.log(currentGroup)
 
     useIonViewWillEnter(() => {
         get("polls/groups").then((resp: AxiosResponse) => {
@@ -170,8 +179,8 @@ const Schedule: React.FC = () => {
     },[currentGroup, currentWeekNumber])
 
     const updateWeekNumber = (a: number) => {
-        setCurrentWeekNumber(currentWeekNumber + a)
         setLoadingState(true)
+        setCurrentWeekNumber(currentWeekNumber + a)
     }
 
     useEffect(() => {
@@ -196,11 +205,11 @@ const Schedule: React.FC = () => {
             <IonContent>
                 <IonItem>
                     <IonLabel>Группа</IonLabel>
-                    <IonSelect value={currentGroup} placeholder="Номер группы" onIonChange={e => {setCurrentGroup(e.detail.value);setLoadingState(true)}}>
+                    {groups.length>0 && currentGroup!==undefined?<IonSelect value={currentGroup} placeholder="Номер группы" onIonChange={e => {setCurrentGroup(e.detail.value);setCookie("currentGroup",e.detail.value);setLoadingState(true)}}>
                         ({
                             groups.map(group => <IonSelectOption value={group.short_name} key={"group" + group.id}>{group.short_name}</IonSelectOption>)
                         })
-                    </IonSelect>
+                    </IonSelect>:null}
                 </IonItem>
                 <CalendarDaysCircle weekNumber={currentWeekNumber} studyDays={studyDays} updateWeekNumber={updateWeekNumber} />
             </IonContent>

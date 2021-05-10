@@ -1,5 +1,6 @@
 {
-  "name": "aviaApp",
+  "name": "УИГА",
+  "appId": "io.ionic.starter",
   "integrations": {
     "capacitor": {}
   },

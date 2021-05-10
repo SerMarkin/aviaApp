@@ -24,3 +24,8 @@ yarn-debug.log*
 yarn-error.log*
 
 android/
+ios/
+
+resources/android/
+resources/ios/
+resources/windows/

@@ -1,10 +1,11 @@
 {
-  "name": "aviaApp",
+  "name": "uig-avia-app",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@capacitor/android": "^2.4.7",
     "@capacitor/core": "2.4.7",
+    "@capacitor/ios": "^2.4.7",
     "@ionic-native/core": "^5.31.1",
     "@ionic-native/file": "^5.31.1",
     "@ionic-native/file-transfer": "^5.31.1",
