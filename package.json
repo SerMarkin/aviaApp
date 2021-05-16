@@ -38,7 +38,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build --env.CI=false",
+    "build": "CI=false react-scripts build",
     "sync": "npx cap sync",
     "test": "react-scripts test",
     "eject": "react-scripts eject CI=false",
