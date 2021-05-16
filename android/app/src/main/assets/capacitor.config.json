@@ -1,0 +1,11 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "УИГА",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "linuxAndroidStudioPath": "/home/er/android-studio/bin/studio.sh",
+  "cordova": {},
+  "plugins": {
+  }
+}
