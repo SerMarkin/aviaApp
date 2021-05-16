@@ -38,10 +38,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build CI=false",
     "sync": "npx cap sync",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "eject": "react-scripts eject CI=false",
     "android": "npx cap add android",
     "android-open": "npx cap open android"
   },
