@@ -5,5 +5,7 @@
   "npmClient": "npm",
   "webDir": "build",
   "linuxAndroidStudioPath": "/home/er/android-studio/bin/studio.sh",
-  "cordova": {}
+  "cordova": {},
+  "plugins": {
+  }
 }

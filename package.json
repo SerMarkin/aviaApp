@@ -8,7 +8,7 @@
     "@capacitor/ios": "^2.4.7",
     "@ionic-native/core": "^5.31.1",
     "@ionic-native/file": "^5.31.1",
-    "@ionic-native/file-transfer": "^5.31.1",
+    "@ionic-native/file-transfer": "^5.32.1",
     "@ionic/react": "^5.6.1",
     "@ionic/react-router": "^5.6.1",
     "@testing-library/jest-dom": "^5.11.9",

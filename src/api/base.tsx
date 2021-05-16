@@ -11,3 +11,5 @@ export function post(url:string,data?:any,config?:AxiosRequestConfig|undefined){
 export function get(url:string,config?:AxiosRequestConfig|undefined){
     return axios.get(BASE_URL + "/" + url,config)
 }
+
+export const BASE_API = BASE_URL;

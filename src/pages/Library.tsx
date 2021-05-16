@@ -4,16 +4,13 @@ import {
     IonCardContent, IonCardHeader, IonCol, IonRow, IonImg,
     IonInfiniteScroll, IonInfiniteScrollContent
 } from "@ionic/react"
+import { AxiosResponse } from "axios"
 
 import React, { useState } from "react"
-import {
-    FileTransfer,
-} from "@ionic-native/file-transfer";
-import { File } from "@ionic-native/file";
-import { get, post } from "../api/base"
-import '../styles/Paginator.css'
-import { AxiosResponse } from "axios";
 
+import { get, post, BASE_API } from "../api/base"
+import '../styles/Paginator.css'
+console.log(BASE_API)
 interface Discipline {
     name: string,
     short_name: string,
@@ -23,31 +20,14 @@ interface Discipline {
 interface Book {
     title: string,
     description: string,
-    logo: string,
-    src: string,
+    logo_url: string,
+    src_url: string,
     author: string,
     discipline: Discipline
 }
 interface Props {
     book: Book
 }
-const download = (src: string) => {
-    console.log("download");
-    let fileTransfer = FileTransfer.create();
-    const url = src;
-    const name = src.split("/")[src.split("/").length - 1]
-    const tmp = File.tempDirectory ? File.tempDirectory : "/"
-    fileTransfer.download(url, tmp + name, true).then(
-        async entry => {
-
-            console.log("download complete: " + entry.toURL());
-        },
-        error => {
-            // handle error
-            console.log("error", error);
-        }
-    );
-};
 
 export class Books extends React.Component<Props, {}> {
 
@@ -65,13 +45,13 @@ export class Books extends React.Component<Props, {}> {
                 <IonCardContent style={{ width: "100%" }}>
                     <IonRow>
                         <IonCol size="6">
-                            <IonImg src={this.props.book.logo} alt="logo" style={{ width: "100%", height: "100%" }} />
+                            <IonImg src={BASE_API + this.props.book.logo_url} alt="logo" style={{ width: "100%", height: "100%" }} />
                         </IonCol>
                         <IonCol size="6">
                             <h3>{this.props.book.author}</h3>
                             <h3>{this.props.book.description}</h3>
                             <IonButtons style={{ maxWidth: "100%" }}>
-                                <IonButton onClick={() => download(this.props.book.src)}>Скачать</IonButton>
+                                <IonButton onClick={() => { }} href={BASE_API + this.props.book.src_url} download={"true"}>Скачать</IonButton>
                             </IonButtons>
                         </IonCol>
                     </IonRow>
